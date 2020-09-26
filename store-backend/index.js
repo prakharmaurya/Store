@@ -16,7 +16,9 @@ mongoose
     log.error(`Failed to connect to database ${err}`);
   });
 
-// const app = require("./app");
-// app.listen(process.env.PORT, () => {
-//   console.log(`StoreBackend  started listening at http://localhost:${PORT}`);
-// });
+const app = require("./app");
+app.listen(process.env.PORT, () => {
+  console.log(
+    `StoreBackend  started listening at http://localhost:${process.env.PORT}`
+  );
+});
