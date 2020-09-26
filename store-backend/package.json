@@ -19,5 +19,13 @@
   "bugs": {
     "url": "https://github.com/prakharmaurya/Store/issues"
   },
-  "homepage": "https://github.com/prakharmaurya/Store#readme"
+  "homepage": "https://github.com/prakharmaurya/Store#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.10.7"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
 }
