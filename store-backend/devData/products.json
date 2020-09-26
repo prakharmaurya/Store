@@ -1,0 +1,24 @@
+[
+  {
+    "name": "phone",
+    "model": "samsung-guru",
+    "image": "https://images-na.ssl-images-amazon.com/images/I/81lO53zfDDL._SY606_.jpg",
+    "description": "this is a phone",
+    "price": 1600,
+    "rating": 4.2,
+    "quantity": 10,
+    "category": "electronics",
+    "discount": 0
+  },
+  {
+    "name": "shirt",
+    "model": "full-sleeves",
+    "image": "https://images-na.ssl-images-amazon.com/images/I/81lO53zfDDL._SY606_.jpg",
+    "description": "this is a cloth",
+    "price": 160,
+    "rating": 4,
+    "quantity": 11,
+    "category": "clothes",
+    "discount": 0
+  }
+]
