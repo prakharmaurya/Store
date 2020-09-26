@@ -21,4 +21,7 @@ app.listen(process.env.PORT, () => {
   console.log(
     `StoreBackend  started listening at http://localhost:${process.env.PORT}`
   );
+  // if (process.env.NODE_ENV.trim() === "production") {
+  //   console.log(process.env.NODE_ENV);
+  // }
 });

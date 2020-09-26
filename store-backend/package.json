@@ -4,7 +4,8 @@
   "description": "nodejs-express-mongodb",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon"
+    "dev": "nodemon",
+    "start": "SET NODE_ENV=production && node index.js"
   },
   "repository": {
     "type": "git",
