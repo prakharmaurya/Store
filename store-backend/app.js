@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const productsRoute = require("./router/products");
+const productsRoute = require("./router/productsRouter");
 
 // saves body data in req.body in object format
 app.use(express.json());
