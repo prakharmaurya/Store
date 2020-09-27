@@ -7,10 +7,8 @@ const {
 } = require("../controllers/products");
 
 // router
-router
-  .get("/", getAllProducts)
-  .get("/:id", getAProducts)
-  .post("/", createAProducts)
-  .patch("/:id", updateAProducts);
+router.route("/").get(getAllProducts).post(createAProducts);
+
+router.route("/:id").get(getAProducts).patch(updateAProducts);
 
 module.exports = router;
