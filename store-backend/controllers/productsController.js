@@ -50,3 +50,12 @@ exports.updateAProducts = (req, res, next) => {
     }
   );
 };
+
+exports.deleteAProduct = (req, res, next) => {
+  ProductModel.findByIdAndDelete(req.params.id, (err, docs) => {
+    if (err) {
+      return res.send(err);
+    }
+    res.send(docs);
+  });
+};
