@@ -6,6 +6,7 @@ const {
   updateAProducts,
 } = require("../controllers/products");
 
+// router
 router
   .get("/", getAllProducts)
   .get("/:id", getAProducts)
