@@ -3,8 +3,6 @@ const { isURL, isAlphanumeric, isEmail, isFloat } = require("validator");
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, "Name is required"],
-    validate: [/^[0-9a-z\- ]+$/, "Provide a correct Name"],
   },
   email: {
     type: String,

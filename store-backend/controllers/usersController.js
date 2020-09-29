@@ -1,4 +1,6 @@
 const UserModel = require("../models/userModel");
+const bcrypt = require("bcrypt");
+const { rejectFilter } = require("../utilities/filterObj");
 
 exports.getAllUsers = (req, res, next) => {
   UserModel.find({}, (err, docs) => {
@@ -19,34 +21,68 @@ exports.getAUser = (req, res, next) => {
 };
 
 exports.signUp = (req, res, next) => {
-  console.log("createAUser called");
-  new UserModel({
-    name: req.body.name,
-    image: req.body.image,
-    email: req.body.email,
-    password: req.body.password,
-  }).save((err, docs) => {
-    if (err) {
-      return res.send(err);
-    }
-    res.send({
-      name: docs.name,
-      image: docs.image,
-      email: docs.email,
+  bcrypt.hash(req.body.password, 15, (err, hash) => {
+    new UserModel({
+      name: req.body.name,
+      image: req.body.image,
+      email: req.body.email,
+      password: hash,
+    }).save((err, docs) => {
+      if (err) {
+        return res.send(err);
+      }
+      res.send({
+        state: "success",
+        doc: {
+          name: docs.name,
+          image: docs.image,
+          email: docs.email,
+        },
+      });
     });
   });
 };
 
-exports.updateAUser = (req, res, next) => {
-  UserModel.findByIdAndUpdate(
-    req.params.id,
-    { name: req.body.name },
-    null,
+exports.login = (req, res, next) => {
+  UserModel.findOne(
+    { email: req.body.email },
+    { password: true },
     (err, docs) => {
       if (err) {
         return res.send(err);
       }
-      res.send({ user: req.body });
+      console.log(docs);
+      bcrypt.compare(req.body.password, docs.password, (err, result) => {
+        if (result) {
+          res.send("login succses");
+        } else {
+          res.send("password is wrong");
+        }
+      });
+    }
+  );
+};
+
+exports.updateAUser = (req, res, next) => {
+  const rejectArr = ["email", "password"];
+  const newObj = rejectFilter(rejectArr, req.body);
+
+  console.log(newObj);
+
+  UserModel.findOneAndUpdate(
+    { email: req.body.email },
+    newObj,
+    { runValidators: true },
+    (err, docs) => {
+      if (err) {
+        return res.send(err);
+      }
+      res.send({
+        status: "success",
+        docs: {
+          newObj,
+        },
+      });
     }
   );
 };
