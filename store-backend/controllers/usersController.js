@@ -20,49 +20,6 @@ exports.getAUser = (req, res, next) => {
   });
 };
 
-exports.signUp = (req, res, next) => {
-  bcrypt.hash(req.body.password, 15, (err, hash) => {
-    new UserModel({
-      name: req.body.name,
-      image: req.body.image,
-      email: req.body.email,
-      password: hash,
-    }).save((err, docs) => {
-      if (err) {
-        return res.send(err);
-      }
-      res.send({
-        state: "success",
-        doc: {
-          name: docs.name,
-          image: docs.image,
-          email: docs.email,
-        },
-      });
-    });
-  });
-};
-
-exports.login = (req, res, next) => {
-  UserModel.findOne(
-    { email: req.body.email },
-    { password: true },
-    (err, docs) => {
-      if (err) {
-        return res.send(err);
-      }
-      console.log(docs);
-      bcrypt.compare(req.body.password, docs.password, (err, result) => {
-        if (result) {
-          res.send("login succses");
-        } else {
-          res.send("password is wrong");
-        }
-      });
-    }
-  );
-};
-
 exports.updateAUser = (req, res, next) => {
   const rejectArr = ["email", "password"];
   const newObj = rejectFilter(rejectArr, req.body);
