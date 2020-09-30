@@ -33,7 +33,25 @@ exports.tokenChecker = (req, res, next) => {
   });
 };
 
-/// conver in async
+exports.roleChecker = (role) => {
+  return (req, res, next) => {
+    UserModel.findById(req.body.id, (err, docs) => {
+      // arr traverse without flag
+      role.forEach((r) => {
+        if (r === docs.role) {
+          next();
+          return;
+        }
+      });
+      res.json({
+        status: "failed",
+        message: "You are not authorized to perform this action",
+      });
+    });
+  };
+};
+
+// conver in async
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,

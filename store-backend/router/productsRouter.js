@@ -6,15 +6,18 @@ const {
   updateAProducts,
   deleteAProduct,
 } = require("../controllers/productsController");
-const { tokenChecker } = require("../controllers/authController");
+const { tokenChecker, roleChecker } = require("../controllers/authController");
 
 // router
-router.route("/").get(getAllProducts).post(tokenChecker, createAProducts);
+router
+  .route("/")
+  .get(getAllProducts)
+  .post(tokenChecker, roleChecker(["business"]), createAProducts);
 
 router
   .route("/:id")
   .get(getAProducts)
-  .patch(tokenChecker, updateAProducts)
-  .delete(tokenChecker, deleteAProduct);
+  .patch(tokenChecker, roleChecker(["admin", "business"]), updateAProducts)
+  .delete(tokenChecker, roleChecker(["admin", "business"]), deleteAProduct);
 
 module.exports = router;
