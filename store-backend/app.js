@@ -16,7 +16,6 @@ app.all("*", (req, res) => {
     status: "failed",
     message: "Route not found",
   });
-  next();
 });
 
 module.exports = app;
