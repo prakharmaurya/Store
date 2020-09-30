@@ -12,7 +12,7 @@ exports.tokenChecker = (req, res, next) => {
   ) {
     token = req.headers.authorization.split(" ")[1];
   }
-  console.log(req.headers);
+  // console.log(req.headers);
 
   // validate token
   if (!token) {
@@ -24,14 +24,13 @@ exports.tokenChecker = (req, res, next) => {
 
   // Check if user still exists
   const decoded = jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-    console.log(decoded);
     if (decoded) {
       req.body.id = decoded.id;
+      next();
     } else {
       res.send("Token modified not alloed");
     }
   });
-  next();
 };
 
 /// conver in async

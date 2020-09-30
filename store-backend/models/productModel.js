@@ -30,7 +30,6 @@ const productSchema = new mongoose.Schema({
     default: 0,
     validate: {
       validator: (data) => {
-        console.log(data);
         return data <= 5 && data >= 0;
       },
       message: (props) => `${props.value} is not a valid rating`,
