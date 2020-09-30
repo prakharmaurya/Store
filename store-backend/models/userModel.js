@@ -22,6 +22,11 @@ const userSchema = new mongoose.Schema({
     validate: [isURL, "Provide a correct URL"],
     default: "https://source.unsplash.com/180x180?profile",
   },
+  role: {
+    type: String,
+    enum: ["admin", "business", "user"],
+    default: "user",
+  },
 });
 const UserModel = mongoose.model("Users", userSchema);
 

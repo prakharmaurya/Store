@@ -65,6 +65,11 @@ exports.signUp = (req, res, next) => {
       name: req.body.name,
       image: req.body.image,
       email: req.body.email,
+      role: req.body.role
+        ? req.body.role === "business"
+          ? "business"
+          : "user"
+        : "user",
       password: hash,
     }).save((err, docs) => {
       if (err) {
