@@ -18,7 +18,8 @@ const productSchema = new mongoose.Schema({
   },
   createdBy: {
     type: mongoose.Schema.ObjectId,
-    ref: "Users",
+    ref: "User",
+    required: [true],
   },
   description: {
     type: String,
