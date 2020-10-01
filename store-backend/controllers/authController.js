@@ -1,4 +1,4 @@
-const UserModel = require("../models/userModel");
+const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const { rejectFilter } = require("../utilities/filterObj");
 const jwt = require("jsonwebtoken");
@@ -26,6 +26,7 @@ exports.tokenChecker = (req, res, next) => {
   const decoded = jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
     if (decoded) {
       req.body.id = decoded.id;
+      // TODO check token expires
       next();
     } else {
       res.send("Token modified not alloed");
@@ -35,23 +36,24 @@ exports.tokenChecker = (req, res, next) => {
 
 exports.roleChecker = (role) => {
   return (req, res, next) => {
-    UserModel.findById(req.body.id, (err, docs) => {
-      // arr traverse without flag
-      role.forEach((r) => {
-        if (r === docs.role) {
-          next();
-          return;
-        }
+    User.findById(req.body.id, (err, docs) => {
+      let flag = false;
+      role.forEach((role) => {
+        if (role === docs.role) flag = true;
       });
-      res.json({
-        status: "failed",
-        message: "You are not authorized to perform this action",
-      });
+      if (flag) {
+        next();
+      } else {
+        res.json({
+          status: "failed",
+          message: "You are not authorized to perform this action",
+        });
+      }
     });
   };
 };
 
-// conver in async
+/// conver in async
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,
@@ -79,7 +81,7 @@ const createAndSendToken = (user, res) => {
 
 exports.signUp = (req, res, next) => {
   bcrypt.hash(req.body.password, 10, (err, hash) => {
-    new UserModel({
+    new User({
       name: req.body.name,
       image: req.body.image,
       email: req.body.email,
@@ -93,20 +95,13 @@ exports.signUp = (req, res, next) => {
       if (err) {
         return res.send(err);
       }
-      res.send({
-        state: "success",
-        doc: {
-          name: docs.name,
-          image: docs.image,
-          email: docs.email,
-        },
-      });
+      createAndSendToken(docs, res);
     });
   });
 };
 
 exports.login = (req, res, next) => {
-  UserModel.findOne(
+  User.findOne(
     { email: req.body.email },
     { password: true, _id: true },
     (err, docs) => {
@@ -128,7 +123,7 @@ exports.updateMe = (req, res, next) => {
   const rejectArr = ["id", "_id", "email", "password"];
   const newObj = rejectFilter(rejectArr, req.body);
 
-  UserModel.findByIdAndUpdate(
+  User.findByIdAndUpdate(
     req.body.id,
     newObj,
     { runValidators: true },
@@ -147,7 +142,7 @@ exports.updateMe = (req, res, next) => {
 };
 
 // exports.deleteMe = (req, res, next) => {
-//   UserModel.findByIdAndDelete(req.params.id, (err, docs) => {
+//   User.findByIdAndDelete(req.params.id, (err, docs) => {
 //     if (err) {
 //       return res.send(err);
 //     }

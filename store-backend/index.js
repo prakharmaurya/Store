@@ -13,7 +13,7 @@ mongoose
     console.log("Connected to db");
   })
   .catch((err) => {
-    log.error(`Failed to connect to database ${err}`);
+    console.error(`Failed to connect to database ${err}`);
   });
 
 const app = require("./app");

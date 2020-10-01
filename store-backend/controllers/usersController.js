@@ -1,9 +1,9 @@
-const UserModel = require("../models/userModel");
+const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const { rejectFilter } = require("../utilities/filterObj");
 
 exports.getAllUsers = (req, res, next) => {
-  UserModel.find({}, (err, docs) => {
+  User.find({}, (err, docs) => {
     if (err) {
       return res.send(err);
     }
@@ -12,7 +12,7 @@ exports.getAllUsers = (req, res, next) => {
 };
 
 exports.getAUser = (req, res, next) => {
-  UserModel.findById(req.params.id, (err, docs) => {
+  User.findById(req.params.id, (err, docs) => {
     if (err) {
       return res.send(err);
     }
@@ -26,7 +26,7 @@ exports.updateAUser = (req, res, next) => {
 
   console.log(newObj);
 
-  UserModel.findOneAndUpdate(
+  User.findOneAndUpdate(
     { email: req.body.email },
     newObj,
     { runValidators: true },
@@ -45,7 +45,7 @@ exports.updateAUser = (req, res, next) => {
 };
 
 exports.deleteAUser = (req, res, next) => {
-  UserModel.findByIdAndDelete(req.params.id, (err, docs) => {
+  User.findByIdAndDelete(req.params.id, (err, docs) => {
     if (err) {
       return res.send(err);
     }

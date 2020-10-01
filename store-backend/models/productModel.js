@@ -4,13 +4,21 @@ const productSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, "Product name is required"],
-    validate: [/^[0-9a-z\- ]+$/, "Provide a correct Name"],
+    validate: [/^[0-9a-zA-Z\- ]+$/, "Provide a correct Name"],
   },
   model: String,
   image: {
     type: String,
     required: [true, "Product image is required"],
     validate: [isURL, "Provide a correct URL"],
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now(),
+  },
+  createdBy: {
+    type: mongoose.Schema.ObjectId,
+    ref: "Users",
   },
   description: {
     type: String,
@@ -35,7 +43,11 @@ const productSchema = new mongoose.Schema({
       message: (props) => `${props.value} is not a valid rating`,
     },
   },
-  quantity: Number,
+  quantity: {
+    type: Number,
+    required: [true, "Quantity must be provided"],
+    min: [0, "Quantity must be greater 0"],
+  },
   category: String,
   discount: {
     type: Number,
@@ -44,6 +56,7 @@ const productSchema = new mongoose.Schema({
     max: [100, "discount must be greater 100"],
   },
 });
-const ProductModel = mongoose.model("products", productSchema);
 
-module.exports = ProductModel;
+const Product = mongoose.model("Product", productSchema, "products");
+
+module.exports = Product;

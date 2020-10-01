@@ -12,7 +12,7 @@ const { tokenChecker, roleChecker } = require("../controllers/authController");
 router
   .route("/")
   .get(getAllProducts)
-  .post(tokenChecker, roleChecker(["business"]), createAProducts);
+  .post(tokenChecker, roleChecker(["admin", "business"]), createAProducts);
 
 router
   .route("/:id")

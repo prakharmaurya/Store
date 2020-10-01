@@ -1,7 +1,7 @@
-const ProductModel = require("../models/productModel");
+const Product = require("../models/productModel");
 
 exports.getAllProducts = (req, res, next) => {
-  ProductModel.find({}, (err, docs) => {
+  Product.find({}, (err, docs) => {
     if (err) {
       return res.send(err);
     }
@@ -10,7 +10,7 @@ exports.getAllProducts = (req, res, next) => {
 };
 
 exports.getAProducts = (req, res, next) => {
-  ProductModel.findById(req.params.id, (err, docs) => {
+  Product.findById(req.params.id, (err, docs) => {
     if (err) {
       return res.send(err);
     }
@@ -19,7 +19,7 @@ exports.getAProducts = (req, res, next) => {
 };
 
 exports.createAProducts = (req, res, next) => {
-  new ProductModel({
+  new Product({
     name: req.body.name,
     model: req.body.model,
     image: req.body.image,
@@ -29,6 +29,7 @@ exports.createAProducts = (req, res, next) => {
     quantity: req.body.quantity,
     category: req.body.category,
     discount: req.body.discount,
+    createdBy: req.body.id,
   }).save((err, docs) => {
     if (err) {
       return res.send(err);
@@ -38,7 +39,7 @@ exports.createAProducts = (req, res, next) => {
 };
 
 exports.updateAProducts = (req, res, next) => {
-  ProductModel.findByIdAndUpdate(
+  Product.findByIdAndUpdate(
     req.params.id,
     { model: req.body.model },
     null,
@@ -52,7 +53,7 @@ exports.updateAProducts = (req, res, next) => {
 };
 
 exports.deleteAProduct = (req, res, next) => {
-  ProductModel.findByIdAndDelete(req.params.id, (err, docs) => {
+  Product.findByIdAndDelete(req.params.id, (err, docs) => {
     if (err) {
       return res.send(err);
     }
