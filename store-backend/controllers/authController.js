@@ -25,9 +25,15 @@ exports.tokenChecker = (req, res, next) => {
   // Check if user still exists
   const decoded = jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
     if (decoded) {
-      req.body.id = decoded.id;
+      User.findById(decoded.id, (err, docs) => {
+        if (err) {
+          return res.send("User DNE");
+        } else {
+          req.user = docs;
+          next();
+        }
+      });
       // TODO check token expires
-      next();
     } else {
       res.send("Token modified not alloed");
     }
@@ -36,20 +42,18 @@ exports.tokenChecker = (req, res, next) => {
 
 exports.roleChecker = (role) => {
   return (req, res, next) => {
-    User.findById(req.body.id, (err, docs) => {
-      let flag = false;
-      role.forEach((role) => {
-        if (role === docs.role) flag = true;
-      });
-      if (flag) {
-        next();
-      } else {
-        res.json({
-          status: "failed",
-          message: "You are not authorized to perform this action",
-        });
-      }
+    let flag = false;
+    role.forEach((r) => {
+      if (r === req.user.role) flag = true;
     });
+    if (flag) {
+      next();
+    } else {
+      res.json({
+        status: "failed",
+        message: "You are not authorized to perform this action",
+      });
+    }
   };
 };
 
