@@ -16,10 +16,7 @@ exports.tokenChecker = (req, res, next) => {
 
   // validate token
   if (!token) {
-    return res.json({
-      status: "failed",
-      messege: "Not authorized..",
-    });
+    return next({ statusCode: 403, message: "not authorized..." });
   }
 
   // Check if user still exists
@@ -27,10 +24,10 @@ exports.tokenChecker = (req, res, next) => {
     if (decoded) {
       User.findById(decoded.id, (err, docs) => {
         if (err) {
-          return res.send("User DNE");
+          return next({ staus: "failed", message: "User DNE", err });
         } else {
           req.user = docs;
-          next();
+          return next();
         }
       });
       // TODO check token expires
@@ -57,7 +54,7 @@ exports.roleChecker = (role) => {
   };
 };
 
-/// conver in async
+// conver in async
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,

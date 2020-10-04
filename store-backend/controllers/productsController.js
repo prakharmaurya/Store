@@ -105,7 +105,7 @@ const updateProductFn = (req, res) => {
 exports.deleteAProduct = (req, res, next) => {
   Product.findByIdAndDelete(req.params.id, (err, docs) => {
     if (err) {
-      return res.send(err);
+      return next({ statusCode: 501, message: "failed to delete", err });
     }
     res.send(docs);
   });

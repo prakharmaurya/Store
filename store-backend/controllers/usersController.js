@@ -24,8 +24,6 @@ exports.updateAUser = (req, res, next) => {
   const rejectArr = ["email", "password"];
   const newObj = rejectFilter(rejectArr, req.body);
 
-  console.log(newObj);
-
   User.findOneAndUpdate(
     { email: req.body.email },
     newObj,
