@@ -2,12 +2,14 @@ const express = require("express");
 const app = express();
 const productsRoute = require("./router/productsRouter");
 const usersRoute = require("./router/usersRouter");
+const orderTxnRoute = require("./router/orderTxnRouter");
 
 // saves body data in req.body in object format
 app.use(express.json());
 
 app.use("/api/v1/products", productsRoute);
 app.use("/api/v1/users", usersRoute);
+app.use("/api/v1/ordertxn", orderTxnRoute);
 
 // get all routes
 app.all("*", (req, res, next) => {
@@ -26,7 +28,7 @@ app.use((e, req, res, next) => {
     // } else if (process.env.NODE_ENV === "production") {
     //   sendErrorProd(err, res);
     // }
-    res.status(e.statusCode).json({
+    res.status(e.statusCode ? e.statusCode : 500).json({
       status: "failed",
       message: e.message,
       error: e.err,
