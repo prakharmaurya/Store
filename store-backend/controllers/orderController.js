@@ -1,6 +1,6 @@
-const OrderTxn = require("../models/orderTxnModel");
+const Order = require("../models/orderModel");
 
-// exports.getAllOrderTxn = (req, res, next) => {
+// exports.getAllOrder = (req, res, next) => {
 //   Product.find({}, (err, docs) => {
 //     if (err) {
 //       return res.send(err);
@@ -9,7 +9,7 @@ const OrderTxn = require("../models/orderTxnModel");
 //   });
 // };
 
-// exports.getAOrderTxn = (req, res, next) => {
+// exports.getAOrder = (req, res, next) => {
 //   Product.findById(req.params.id, (err, docs) => {
 //     if (err) {
 //       return res.send(err);
@@ -18,13 +18,13 @@ const OrderTxn = require("../models/orderTxnModel");
 //   });
 // };
 
-exports.createAOrderTxn = (req, res, next) => {
-  const orderTxn = new OrderTxn({
+exports.createAOrder = (req, res, next) => {
+  const order = new Order({
     products: req.body.products,
     userId: req.user._id,
   });
 
-  orderTxn.save((err, docs) => {
+  order.save((err, docs) => {
     if (err) {
       return next(err);
     }
@@ -32,7 +32,7 @@ exports.createAOrderTxn = (req, res, next) => {
   });
 };
 
-// exports.deleteAOrderTxn = (req, res, next) => {
+// exports.deleteAOrder = (req, res, next) => {
 //   Product.findByIdAndDelete(req.params.id, (err, docs) => {
 //     if (err) {
 //       return next({ statusCode: 501, message: "failed to delete", err });

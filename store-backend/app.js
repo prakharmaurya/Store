@@ -2,14 +2,14 @@ const express = require("express");
 const app = express();
 const productsRoute = require("./router/productsRouter");
 const usersRoute = require("./router/usersRouter");
-const orderTxnRoute = require("./router/orderTxnRouter");
+const orderRoute = require("./router/orderRouter");
 
 // saves body data in req.body in object format
 app.use(express.json());
 
 app.use("/api/v1/products", productsRoute);
 app.use("/api/v1/users", usersRoute);
-app.use("/api/v1/ordertxn", orderTxnRoute);
+app.use("/api/v1/orders", orderRoute);
 
 // get all routes
 app.all("*", (req, res, next) => {

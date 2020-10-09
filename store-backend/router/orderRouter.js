@@ -1,12 +1,12 @@
 const router = require("express").Router();
 const { tokenChecker, roleChecker } = require("../controllers/authController");
-const { createAOrderTxn } = require("../controllers/orderTxnController");
+const { createAOrder } = require("../controllers/orderController");
 
 // router
 router
   .route("/")
   // .get(getAllProducts)
-  .post(tokenChecker, createAOrderTxn);
+  .post(tokenChecker, createAOrder);
 
 // router
 //   .route("/:id")

@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Product = require("./productModel");
 const { isURL, isAlphanumeric, isAlpha, isFloat } = require("validator");
 
-orderTxnSchema = new mongoose.Schema(
+orderSchema = new mongoose.Schema(
   {
     createdAt: {
       type: Date,
@@ -34,11 +34,16 @@ orderTxnSchema = new mongoose.Schema(
     orderLink: {
       type: String,
     },
+    orderStatus: {
+      type: String,
+      enum: ["success", "pending", "failed"],
+      default: "pending",
+    },
   },
   { toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
-// orderTxnSchema.pre("save", function (next) {
+// orderSchema.pre("save", function (next) {
 //   const productsArr = [];
 
 //   const asyncLoop = new Promise((resolve, reject) => {
@@ -67,7 +72,7 @@ orderTxnSchema = new mongoose.Schema(
 //   });
 // });
 
-orderTxnSchema.pre("save", async function (next) {
+orderSchema.pre("save", async function (next) {
   const productsArr = [];
 
   for (let i = 0; i < this.products.length; i++) {
@@ -86,7 +91,7 @@ orderTxnSchema.pre("save", async function (next) {
   next();
 });
 
-orderTxnSchema.post("save", function (doc, next) {
+orderSchema.post("save", function (doc, next) {
   let totAmmount = 0;
 
   doc.products.forEach((e) => {
@@ -97,6 +102,6 @@ orderTxnSchema.post("save", function (doc, next) {
   next();
 });
 
-const OrderTxn = mongoose.model("OrderTxn", orderTxnSchema);
+const Order = mongoose.model("Order", orderSchema);
 
-module.exports = OrderTxn;
+module.exports = Order;
