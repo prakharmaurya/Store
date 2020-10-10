@@ -41,6 +41,8 @@ exports.createAProducts = (req, res, next) => {
 };
 
 exports.updateAProducts = (req, res, next) => {
+  console.log(req.files);
+
   Product.findById(req.params.id, (err, docs) => {
     if (err) {
       return res.send(err);
@@ -82,25 +84,25 @@ exports.updateAProducts = (req, res, next) => {
   });
 };
 
-const updateProductFn = (req, res) => {
-  Product.findByIdAndUpdate(
-    req.params.id,
-    rejectFilter(
-      ["id", "_id", "createdBy", "rating", "createdAt", "__v"],
-      req.body
-    ),
-    { runValidators: true },
-    (err, docs) => {
-      if (err) {
-        return res.send(err);
-      }
-      res.json({
-        status: "success",
-        docs,
-      });
-    }
-  );
-};
+// const updateProductFn = (req, res) => {
+//   Product.findByIdAndUpdate(
+//     req.params.id,
+//     rejectFilter(
+//       ["id", "_id", "createdBy", "rating", "createdAt", "__v"],
+//       req.body
+//     ),
+//     { runValidators: true },
+//     (err, docs) => {
+//       if (err) {
+//         return res.send(err);
+//       }
+//       res.json({
+//         status: "success",
+//         docs,
+//       });
+//     }
+//   );
+// };
 
 exports.deleteAProduct = (req, res, next) => {
   Product.findByIdAndDelete(req.params.id, (err, docs) => {
