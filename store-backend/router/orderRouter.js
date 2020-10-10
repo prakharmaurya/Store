@@ -1,17 +1,13 @@
 const router = require("express").Router();
-const { tokenChecker, roleChecker } = require("../controllers/authController");
-const { createAOrder } = require("../controllers/orderController");
+const { tokenChecker } = require("../controllers/authController");
+const orderController = require("../controllers/orderController");
 
 // router
 router
   .route("/")
   // .get(getAllProducts)
-  .post(tokenChecker, createAOrder);
+  .post(tokenChecker, orderController.createAOrder);
 
-// router
-//   .route("/:id")
-//   .get(getAProducts)
-//   .patch(tokenChecker, roleChecker(["admin", "business"]), updateAProducts)
-//   .delete(tokenChecker, roleChecker(["admin", "business"]), deleteAProduct);
+router.route("/:id").patch(tokenChecker, orderController.finalizeOrder);
 
 module.exports = router;

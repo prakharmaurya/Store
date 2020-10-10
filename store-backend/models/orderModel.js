@@ -95,7 +95,7 @@ orderSchema.post("save", function (doc, next) {
   let totAmmount = 0;
 
   doc.products.forEach((e) => {
-    totAmmount += e.price;
+    totAmmount += e.price * e.quantity;
   });
 
   doc._doc = { ...doc._doc, totalAmmount: totAmmount };

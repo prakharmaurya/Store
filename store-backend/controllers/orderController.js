@@ -18,6 +18,23 @@ const Order = require("../models/orderModel");
 //   });
 // };
 
+exports.finalizeOrder = async (req, res, next) => {
+  const doc = await Order.findByIdAndUpdate(
+    req.params.id,
+    {
+      orderStatus: req.body.orderStatus,
+    },
+    {
+      new: true,
+    }
+  );
+  if (!doc) {
+    return next("order id not found", 404);
+  }
+  console.log(doc);
+  res.send(doc);
+};
+
 exports.createAOrder = (req, res, next) => {
   const order = new Order({
     products: req.body.products,
@@ -31,12 +48,3 @@ exports.createAOrder = (req, res, next) => {
     res.status(200).send(docs);
   });
 };
-
-// exports.deleteAOrder = (req, res, next) => {
-//   Product.findByIdAndDelete(req.params.id, (err, docs) => {
-//     if (err) {
-//       return next({ statusCode: 501, message: "failed to delete", err });
-//     }
-//     res.send(docs);
-//   });
-// };
