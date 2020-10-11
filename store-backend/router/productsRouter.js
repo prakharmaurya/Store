@@ -4,13 +4,12 @@ const {
   getAProducts,
   createAProducts,
   updateAProducts,
+  restrictProductOnlySelf,
   deleteAProduct,
+  uploadProductImages,
+  resizeProductImages,
 } = require("../controllers/productsController");
 const { tokenChecker, roleChecker } = require("../controllers/authController");
-
-const multer = require("multer");
-const upload = multer({ dest: "./public/products" });
-var cpUpload = upload.fields([{ name: "images", maxCount: 8 }]);
 
 // router
 router
@@ -24,7 +23,9 @@ router
   .patch(
     tokenChecker,
     roleChecker(["admin", "business"]),
-    cpUpload,
+    restrictProductOnlySelf,
+    uploadProductImages,
+    resizeProductImages,
     updateAProducts
   )
   .delete(tokenChecker, roleChecker(["admin", "business"]), deleteAProduct);

@@ -7,11 +7,11 @@ const productSchema = new mongoose.Schema({
     validate: [/^[0-9a-zA-Z\- ]+$/, "Provide a correct Name"],
   },
   model: String,
-  image: {
-    type: String,
-    required: [true, "Product image is required"],
-    validate: [isURL, "Provide a correct URL"],
-  },
+  images: [
+    {
+      type: String,
+    },
+  ],
   createdAt: {
     type: Date,
     default: Date.now(),
